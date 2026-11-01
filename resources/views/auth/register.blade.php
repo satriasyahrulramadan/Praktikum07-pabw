@@ -1,21 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Register Petugas</h2>
+    <h2>Registrasi Petugas BPBD</h2>
 
-    <form action="{{ route('register') }}" method="POST">
+    <form action="{{ route('register') }}" method="POST" style="max-width: 400px;">
         @csrf
-        <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama">
-        @error('name') <p class="error">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="name">Nama</label>
+            <input type="text" id="name" name="name" value="{{ old('name') }}" autofocus>
+            @error('name') <div class="error">{{ $message }}</div> @enderror
+        </div>
 
-        <input type="email" name="email" value="{{ old('email') }}" placeholder="Email">
-        @error('email') <p class="error">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}">
+            @error('email') <div class="error">{{ $message }}</div> @enderror
+        </div>
 
-        <input type="password" name="password" placeholder="Password">
-        @error('password') <p class="error">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="password">Password (minimal 8 karakter)</label>
+            <input type="password" id="password" name="password">
+            @error('password') <div class="error">{{ $message }}</div> @enderror
+        </div>
 
-        <input type="password" name="password_confirmation" placeholder="Konfirmasi password">
+        <div class="field">
+            <label for="password_confirmation">Konfirmasi password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation">
+        </div>
 
-        <button type="submit">Daftar</button>
+        <div class="field">
+            <label for="kode_petugas">Kode petugas</label>
+            <input type="password" id="kode_petugas" name="kode_petugas">
+            @error('kode_petugas') <div class="error">{{ $message }}</div> @enderror
+        </div>
+
+        <button type="submit" class="btn">Daftar</button>
     </form>
 @endsection

@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+'kode_petugas' => env('KODE_PETUGAS', 'BPBD2026'),
     /*
     |--------------------------------------------------------------------------
     | Application Name

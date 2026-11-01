@@ -1,32 +1,29 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\LaporController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('laporan.create');
-});
+// ---- Warga (publik) ----
+Route::get('/', fn () => redirect()->route('lapor.create'));
+Route::get('/lapor', [LaporController::class, 'create'])->name('lapor.create');
+Route::post('/lapor', [LaporController::class, 'store'])->name('lapor.store');
 
-// Bebas diakses warga
-Route::get('/lapor', [LaporanController::class, 'create'])->name('laporan.create');
-Route::post('/lapor', [LaporanController::class, 'store'])->name('laporan.store');
-
-// Register dan login (hanya untuk yang belum login)
+// ---- Login & registrasi petugas ----
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'create'])->name('register');
-    Route::post('/register', [RegisterController::class, 'store']);
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 
-    Route::get('/login', [LoginController::class, 'create'])->name('login');
-    Route::post('/login', [LoginController::class, 'store']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
 });
 
-Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+// ---- Logout (harus sudah login) ----
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-// Khusus petugas (wajib login)
+// ---- Petugas (wajib login) ----
 Route::middleware('auth')->group(function () {
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+    Route::resource('laporan', LaporanController::class)
+        ->only(['index', 'show', 'edit', 'update', 'destroy']);
 });

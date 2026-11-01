@@ -1,16 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Login Petugas</h2>
+    <h2>Login Petugas BPBD</h2>
 
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('login') }}" method="POST" style="max-width: 400px;">
         @csrf
-        <input type="email" name="email" value="{{ old('email') }}" placeholder="Email">
-        @error('email') <p class="error">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" autofocus>
+            @error('email') <div class="error">{{ $message }}</div> @enderror
+        </div>
 
-        <input type="password" name="password" placeholder="Password">
-        @error('password') <p class="error">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+            @error('password') <div class="error">{{ $message }}</div> @enderror
+        </div>
 
-        <button type="submit">Login</button>
+        <div class="field">
+            <label><input type="checkbox" name="remember" value="1"> Ingat saya</label>
+        </div>
+
+        <button type="submit" class="btn">Masuk</button>
     </form>
 @endsection
